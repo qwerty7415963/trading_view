@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--primary-color: #1f2937;
+	--secondary-color: #059669;
+	--sidebar-item-hover: #334155;
+	--sidebar-item-active: #0f172a;
+}
+
+@layer components {
+	.btn-primary {
+		@apply m-2 rounded-lg bg-amber-500 p-2 font-semibold text-zinc-900 shadow-md focus:outline-none;
+	}
+
+	.input-primary {
+		@apply m-2 w-1/2 p-1.5;
+	}
+}
