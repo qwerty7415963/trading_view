@@ -4,7 +4,12 @@
 			class="flex h-40 w-96 flex-col rounded-2xl bg-slate-600 p-4"
 		>
 			<div class="flex flex-row justify-between">
-				<button class="text-white">BCF</button>
+				<button
+					class="px-2 py-0.5 text-white hover:bg-slate-500"
+					@click="onChangeModalState"
+				>
+					{{ selectedTokenInfo.symbol }}
+				</button>
 
 				<p class="text-white">Ballance: 599999999</p>
 			</div>
@@ -13,6 +18,7 @@
 				class="my-3 flex-1 border-none bg-slate-600 text-3xl text-white"
 				placeholder="0.0"
 				type="number"
+				v-model="tokenInAmount"
 			/>
 
 			<div class="grid grid-cols-4 gap-2">
@@ -32,7 +38,11 @@
 			class="flex h-32 w-96 flex-col rounded-2xl bg-slate-600 p-4"
 		>
 			<div class="flex flex-row justify-between">
-				<button class="text-white">BCF</button>
+				<button
+					class="px-2 py-0.5 text-white hover:bg-slate-500"
+				>
+					{{ defaultSelectedOutToken.symbol }}
+				</button>
 
 				<p class="text-white">Ballance: 599999999</p>
 			</div>
@@ -43,29 +53,52 @@
 				type="number"
 			/>
 		</div>
+
+		<div class="flex flex-row items-center justify-between">
+			<button
+				class="btn-primary w-40 p-3"
+				@click="onPressAutoSwap"
+			>
+				SWAP
+			</button>
+		</div>
 	</div>
+
+	<Modal
+		:show-modal="isShowModal"
+		@close-modal="onChangeModalState"
+	></Modal>
 </template>
 
 <script setup>
-	import { ref, watch } from 'vue'
+	import { computed, ref, watch } from 'vue'
 	import { useStore } from 'vuex'
 	import { ArrowCircleDownIcon } from '@heroicons/vue/solid'
+	import Modal from './modal/modal.vue'
+	import {
+		TOKEN_INFO_GETTER,
+		SWAP_TOKEN_ACTION,
+	} from './store-module/type'
+	import {
+		defaultSelectedInToken,
+		defaultSelectedOutToken,
+	} from '@/core/data/common'
 
 	const store = useStore()
 
-	const tokenIn = ref('0xae13d989dac2f0debff460ac112a837c89baa7cd')
-	const tokenOut = ref('')
+	const selectedTokenInfo = computed(
+		() => store.getters[TOKEN_INFO_GETTER]
+	)
 
 	const selectedAmount = ref('')
+	const tokenInAmount = ref(0)
+
+	const isShowModal = ref(false)
 
 	const swapAmount = ['15%', '25%', '50%', '100%']
 
-	watch(tokenIn, (value, oldValue) => {
-		console.log(value, oldValue)
-	})
-
-	watch(tokenOut, (value, oldValue) => {
-		console.log(value, oldValue)
+	watch(selectedTokenInfo, (value) => {
+		console.log(value)
 	})
 
 	const onSelectAmount = (amount) => {
@@ -74,7 +107,11 @@
 	}
 
 	const onPressAutoSwap = () => {
-		console.log('clicked autoswap')
+		store.dispatch(SWAP_TOKEN_ACTION, selectedTokenInfo.value)
+	}
+
+	const onChangeModalState = () => {
+		isShowModal.value = !isShowModal.value
 	}
 </script>
 

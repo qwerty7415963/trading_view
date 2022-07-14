@@ -10,4 +10,5 @@
 	"singleAttributePerLine": true,
 	"vueIndentScriptAndStyle": true,
 	"embeddedLanguageFormatting": "auto"
+	
 }
