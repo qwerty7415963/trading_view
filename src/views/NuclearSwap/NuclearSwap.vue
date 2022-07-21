@@ -56,7 +56,7 @@
 
 		<div class="flex flex-row items-center justify-between">
 			<button
-				class="btn-primary w-40 p-3"
+				class="btn-primary w-40 p-3 shadow-md"
 				@click="onPressAutoSwap"
 			>
 				SWAP
@@ -91,15 +91,15 @@
 	)
 
 	const selectedAmount = ref('')
-	const tokenInAmount = ref(0)
+	const tokenInAmount = ref(10)
 
 	const isShowModal = ref(false)
 
 	const swapAmount = ['15%', '25%', '50%', '100%']
 
-	watch(selectedTokenInfo, (value) => {
-		console.log(value)
-	})
+	// watch(selectedTokenInfo, (value) => {
+	// 	console.log(value)
+	// })
 
 	const onSelectAmount = (amount) => {
 		selectedAmount.value = amount
@@ -107,7 +107,11 @@
 	}
 
 	const onPressAutoSwap = () => {
-		store.dispatch(SWAP_TOKEN_ACTION, selectedTokenInfo.value)
+		store.dispatch(SWAP_TOKEN_ACTION, {
+			tokenIn: selectedTokenInfo.value.address,
+			tokenOut: '69',
+			amount: tokenInAmount.value,
+		})
 	}
 
 	const onChangeModalState = () => {

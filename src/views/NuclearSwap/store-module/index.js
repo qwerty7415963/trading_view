@@ -3,6 +3,7 @@ import {
 	SWAP_TOKEN_ACTION,
 	TOKEN_INFO_GETTER,
 } from './type'
+import swapService from '../api-service/index'
 
 export default {
 	namesapced: true,
@@ -26,7 +27,16 @@ export default {
 		},
 
 		[SWAP_TOKEN_ACTION]({ state }, value) {
-			console.log('SWAP_TOKEN_ACTION', value)
+			console.log(value)
+			swapService
+				.swapIdoToken(
+					value.tokenIn,
+					value.tokenOut,
+					value.amount
+				)
+				.then((data) => {
+					console.log(data)
+				})
 		},
 	},
 }
